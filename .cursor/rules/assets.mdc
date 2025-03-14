@@ -1,0 +1,167 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Guidelines for managing assets in the project
+globs: ["src/assets/**/*"]
+alwaysApply: true
+---
+# Asset Management Rules
+
+## Directory Structure
+```
+src/
+  assets/
+    images/
+      devices/         # Device-specific images
+        litter-box/    # Litter box images
+        feeder/        # Feeder images
+        fountain/      # Water fountain images
+      icons/          # Common icons
+      logos/          # Brand logos
+      backgrounds/    # Background images
+```
+
+## Image Guidelines
+
+### Format Selection
+- Use `SVG` for:
+  - Icons
+  - Logos
+  - Simple illustrations
+  - UI elements that need scaling
+- Use `PNG` for:
+  - Complex illustrations
+  - Device photos
+  - Screenshots
+- Use `WebP` for:
+  - Photos with compression needs
+  - Large images that need optimization
+
+### Naming Convention
+Follow this pattern: `[category]-[descriptor]-[size].[extension]`
+
+Examples:
+```
+icons-warning-24.svg
+device-litter-box-preview.png
+logo-petkit-dark.svg
+```
+
+### Size Guidelines
+- Icons:
+  - Small: 16x16px
+  - Medium: 24x24px
+  - Large: 32x32px
+- Device Images:
+  - Preview: 300x300px
+  - Thumbnail: 150x150px
+- Logos:
+  - Standard: 200x60px
+  - Small: 120x36px
+
+### Optimization
+1. **SVG Files**
+   - Optimize with SVGO
+   - Remove unnecessary metadata
+   - Use meaningful IDs and classes
+   - Minify when building
+
+2. **Raster Images**
+   - Compress PNGs with pngquant
+   - Convert photos to WebP
+   - Provide fallback formats
+   - Keep file sizes under 100KB when possible
+
+### Usage in Code
+
+1. **Import Pattern**
+```typescript
+import deviceIcon from '../assets/images/devices/litter-box/icon.svg'
+```
+
+2. **URL Pattern**
+```typescript
+const imageUrl = new URL('../assets/images/logos/petkit.svg', import.meta.url)
+```
+
+3. **CSS Usage**
+```css
+.device-icon {
+  background-image: url('../assets/images/devices/feeder/icon.svg');
+}
+```
+
+## Best Practices
+
+1. **Version Control**
+   - Track all assets in git
+   - Use Git LFS for large files
+   - Include source files (AI, PSD) in `src/assets/source`
+
+2. **Accessibility**
+   - Provide alt text for all images
+   - Use ARIA labels where needed
+   - Ensure sufficient contrast
+   - Test with screen readers
+
+3. **Responsive Images**
+   - Use srcset for different resolutions
+   - Provide multiple sizes when needed
+   - Use lazy loading for better performance
+   - Consider mobile-first approach
+
+4. **Documentation**
+   - Document image usage in README
+   - Include license information
+   - Maintain asset inventory
+   - Document any third-party sources
+
+## Example Implementation
+
+### Component Usage
+```typescript
+import { html } from 'lit'
+import feederIcon from '../assets/images/devices/feeder/icon.svg'
+
+function renderDeviceIcon() {
+  return html`
+    <img
+      src=${feederIcon}
+      alt="Petkit Feeder"
+      width="24"
+      height="24"
+      loading="lazy"
+    />
+  `
+}
+```
+
+### CSS Implementation
+```css
+.device-card {
+  --device-icon: url('../assets/images/devices/litter-box/icon.svg');
+}
+
+.device-icon {
+  width: 24px;
+  height: 24px;
+  background-image: var(--device-icon);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+```
+
+## Asset Checklist
+
+Before adding new assets:
+- [ ] Correct format selected
+- [ ] Proper naming convention followed
+- [ ] Optimized for web
+- [ ] Correct size and resolution
+- [ ] Accessibility considered
+- [ ] License documented
+- [ ] Fallbacks provided if needed
+- [ ] Added to asset inventory
