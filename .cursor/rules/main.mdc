@@ -3,7 +3,7 @@ description: Serves as the main reference for overall project architecture and s
 globs: 
 alwaysApply: false
 ---
- # Petkit Card Development Rules
+# Petkit Card Development Rules
 
 ## Project Overview
 This project is a custom card for Home Assistant that manages Petkit devices, including:
@@ -95,4 +95,4 @@ This project is a custom card for Home Assistant that manages Petkit devices, in
 - Sanitize entity IDs
 - Use proper event handling
 - Follow Home Assistant security guidelines
-- Avoid XSS vulnerabilities
+- Avoid XSS vulnerabilities 
