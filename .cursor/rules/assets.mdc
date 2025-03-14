@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Guidelines for managing assets in the project
 globs: ["src/assets/**/*"]
 alwaysApply: true
@@ -15,13 +10,11 @@ alwaysApply: true
 src/
   assets/
     images/
-      devices/         # Device-specific images
-        litter-box/    # Litter box images
-        feeder/        # Feeder images
-        fountain/      # Water fountain images
-      icons/          # Common icons
-      logos/          # Brand logos
-      backgrounds/    # Background images
+      devices/
+        litter-box/    # For litter box specific images
+        feeder/        # For feeder specific images
+        fountain/      # For water fountain specific images
+      icons/          # For common icons
 ```
 
 ## Image Guidelines
@@ -164,4 +157,4 @@ Before adding new assets:
 - [ ] Accessibility considered
 - [ ] License documented
 - [ ] Fallbacks provided if needed
-- [ ] Added to asset inventory
+- [ ] Added to asset inventory 
