@@ -14,10 +14,9 @@ A custom card for Home Assistant that displays Petkit devices (smart feeders, wa
 6. Add the following to your `configuration.yaml`:
 
 ```yaml
-lovelace:
-  resources:
-    - url: /hacsfiles/petkit-card/petkit-card.js
-      type: module
+frontend:
+  extra_module_url:
+    - /hacsfiles/petkit-card/petkit-card.js
 ```
 
 ### Manual Installation
@@ -27,11 +26,12 @@ lovelace:
 3. Add the following to your `configuration.yaml`:
 
 ```yaml
-lovelace:
-  resources:
-    - url: /local/petkit-card.js
-      type: module
+frontend:
+  extra_module_url:
+    - /local/petkit-card.js
 ```
+
+4. Restart Home Assistant
 
 ## Usage
 
@@ -39,20 +39,44 @@ Add the card to your dashboard with the following configuration:
 
 ```yaml
 type: custom:petkit-card
-entity: sensor.petkit_device # Replace with your entity
-name: My Petkit Device # Optional: custom name
-show_name: true # Optional: show/hide name
-show_status: true # Optional: show/hide status
+device_type: litter_box    # Type of Petkit device (litter_box, feeder, or water_fountain)
+device_prefix: litter_box  # The prefix of your Petkit device entities
+title: My Litter Box      # Optional: custom title
 ```
+
+## Features
+
+### Litter Box
+- Display device status and warnings
+- Show litter level, usage statistics, and deodorant status
+- Quick controls for power, auto-clean, and light
+- Action buttons for manual scooping and deodorizing
+- Warning indicators for:
+  - Waste bin full
+  - Low litter level
+  - Low deodorizer level
+
+### Feeder (Coming Soon)
+- Device status
+- Food level monitoring
+- Feeding schedule
+- Manual feed control
+- Power control
+
+### Water Fountain (Coming Soon)
+- Device status
+- Water level monitoring
+- Filter life tracking
+- Pump speed control
+- Power control
 
 ## Options
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| entity | string | **Required** | Home Assistant entity ID |
-| name | string | Petkit Device | Name to display for the device |
-| show_name | boolean | true | Show/hide the name |
-| show_status | boolean | true | Show/hide the status |
+| device_type | string | **Required** | Type of Petkit device (`litter_box`, `feeder`, or `water_fountain`) |
+| device_prefix | string | **Required** | The prefix of your Petkit device entities (e.g., "litter_box") |
+| title | string | Petkit Device | Custom title for the card |
 
 ## Development
 
@@ -67,12 +91,23 @@ npm install
 npm run watch
 ```
 
-4. Add the following to your Home Assistant's Lovelace configuration:
-```yaml
-resources:
-  - url: http://localhost:5000/petkit-card.js
-    type: module
-```
+4. Add the resource in Home Assistant:
+   - **Method 1**: Through the UI
+     1. Go to your dashboard
+     2. Click three dots menu in top right
+     3. Click 'Edit Dashboard'
+     4. Click 'Manage Resources' in top right
+     5. Click 'Add Resource'
+     6. Add this URL: `http://localhost:5001/petkit-card.js`
+     7. Select 'JavaScript Module' as the resource type
+   
+   - **Method 2**: Through YAML
+     Add to your `ui-lovelace.yaml` (if using YAML mode):
+     ```yaml
+     resources:
+       - url: http://localhost:5001/petkit-card.js
+         type: module
+     ```
 
 ## Contributing
 
