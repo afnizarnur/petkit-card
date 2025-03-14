@@ -1,0 +1,98 @@
+---
+description: Serves as the main reference for overall project architecture and standards
+globs: 
+alwaysApply: false
+---
+ # Petkit Card Development Rules
+
+## Project Overview
+This project is a custom card for Home Assistant that manages Petkit devices, including:
+- Litter Box
+- Feeder
+- Water Fountain
+
+## Code Organization
+- Keep device-specific code in separate files under `src/devices/`
+- Maintain types in `src/types.ts`
+- Keep styles in `src/styles.ts`
+- Main card logic in `src/petkit-card.ts`
+
+## TypeScript Guidelines
+- Use strict typing for all functions and variables
+- Make entity states optional with `?` operator
+- Use proper type assertions and avoid `any`
+- Define interfaces for all entity types
+- Use enums for device types and other constants
+
+## Component Structure
+- Each device component should have:
+  - Main render function
+  - Warning renderer
+  - Info renderer
+  - Controls renderer (if applicable)
+- Use consistent parameter ordering:
+  1. entities
+  2. title
+  3. devicePrefix (if needed)
+  4. event handlers (if needed)
+
+## Styling Rules
+- Use CSS variables for theming
+- Follow Home Assistant's design system
+- Maintain consistent spacing and layout
+- Use grid for responsive layouts
+- Keep styles modular and reusable
+
+## Error Handling
+- Always provide fallback values for undefined states
+- Use null coalescing for safe state access
+- Validate configuration in setConfig
+- Show clear error messages to users
+
+## Best Practices
+- Follow Home Assistant's custom card guidelines
+- Use lit-element decorators appropriately
+- Keep render functions pure
+- Minimize state mutations
+- Use proper event delegation
+- Maintain clear separation of concerns
+
+## Documentation
+- Document all public interfaces
+- Include JSDoc comments for complex functions
+- Keep README up to date with configuration options
+- Document entity requirements for each device type
+
+## Testing
+- Test with different entity combinations
+- Verify error states and edge cases
+- Test responsive layouts
+- Ensure proper error handling
+- Validate configuration options
+
+## Performance
+- Minimize unnecessary re-renders
+- Use efficient state management
+- Optimize template expressions
+- Keep DOM updates minimal
+- Use proper event handling
+
+## Accessibility
+- Use semantic HTML elements
+- Provide proper ARIA attributes
+- Ensure keyboard navigation
+- Maintain sufficient color contrast
+- Support screen readers
+
+## Localization
+- Use translatable strings
+- Support RTL layouts
+- Format numbers and dates properly
+- Use locale-aware formatting
+
+## Security
+- Validate all user inputs
+- Sanitize entity IDs
+- Use proper event handling
+- Follow Home Assistant security guidelines
+- Avoid XSS vulnerabilities

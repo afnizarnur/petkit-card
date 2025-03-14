@@ -1,0 +1,175 @@
+# Semantic Commit Rules
+
+## Format
+Each commit message should follow this format:
+
+```
+type(scope): subject
+
+[optional body]
+
+[optional footer(s)]
+```
+
+## Types
+Use one of these types:
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, etc)
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process or auxiliary tools and libraries
+- `revert`: Reverts a previous commit
+
+## Scope
+The scope should be one of:
+
+- `core`: Core card functionality
+- `litter-box`: Litter box device component
+- `feeder`: Feeder device component
+- `fountain`: Water fountain device component
+- `types`: TypeScript types and interfaces
+- `styles`: CSS styles and theming
+- `deps`: Dependencies and build tools
+- `config`: Configuration and settings
+- `docs`: Documentation files
+
+## Subject Rules
+- Use imperative, present tense: "change" not "changed" nor "changes"
+- Don't capitalize first letter
+- No dot (.) at the end
+- Maximum 72 characters
+- Should complete this sentence: "If applied, this commit will [subject]"
+
+## Examples
+
+### Feature Addition
+```
+feat(feeder): add manual feed amount control
+
+- Add input field for custom feed amount
+- Implement validation for min/max values
+- Update documentation with new option
+```
+
+### Bug Fix
+```
+fix(litter-box): resolve undefined state handling
+
+Fixes issue where undefined device status would cause rendering error
+```
+
+### Documentation Update
+```
+docs(readme): update configuration examples
+
+- Add new device type options
+- Update installation instructions
+- Include troubleshooting guide
+```
+
+### Style Changes
+```
+style(fountain): improve responsive layout
+
+- Adjust grid layout for mobile devices
+- Fix padding on status indicators
+```
+
+### Refactoring
+```
+refactor(core): improve entity state management
+
+- Extract state handling to separate utility
+- Improve type safety
+- No functional changes
+```
+
+### Performance Improvement
+```
+perf(core): optimize render updates
+
+Reduce unnecessary re-renders by implementing memoization
+```
+
+### Testing
+```
+test(feeder): add unit tests for state handling
+
+Coverage for:
+- Entity state updates
+- Error conditions
+- Event handling
+```
+
+## Best Practices
+
+1. **Atomic Commits**
+   - Each commit should represent one logical change
+   - Keep commits focused and small
+   - Make it easy to revert if needed
+
+2. **Clear Description**
+   - Be descriptive but concise
+   - Explain the "why" in the body if needed
+   - Reference issues/PRs where applicable
+
+3. **Breaking Changes**
+   - Mark with `BREAKING CHANGE:` in footer
+   - Provide migration instructions
+   - Example:
+     ```
+     feat(core): update entity interface structure
+
+     BREAKING CHANGE: Entity state structure has changed
+     - Old: entity.state.value
+     - New: entity.value
+     
+     Migration guide in docs/migration.md
+     ```
+
+4. **Issue References**
+   - Include issue numbers in footer
+   - Use keywords to auto-close issues
+   - Example:
+     ```
+     fix(fountain): resolve water level display
+
+     Closes #123
+     ```
+
+5. **Multiple Scopes**
+   - Use comma for multiple scopes
+   - Example: `feat(core,types): add new entity interface`
+
+6. **Revert Commits**
+   - Reference original commit
+   - Example:
+     ```
+     revert: feat(feeder): add manual feed amount control
+
+     This reverts commit abc123
+     ```
+
+## Commit Workflow
+
+1. **Before Committing**
+   - Run tests
+   - Check linting
+   - Verify build
+   - Review changes
+
+2. **Writing the Message**
+   - Choose appropriate type
+   - Determine scope
+   - Write clear subject
+   - Add body if needed
+   - Include footer if applicable
+
+3. **After Committing**
+   - Verify commit history
+   - Push to appropriate branch
+   - Update related issues/PRs 

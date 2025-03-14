@@ -1,0 +1,167 @@
+---
+description: Guides the development of device-specific components
+globs: 
+alwaysApply: false
+---
+ # Device Component Rules
+
+## Component Structure
+Each device component file should follow this structure:
+
+```typescript
+import { html, TemplateResult } from "lit"
+import { DeviceEntities } from "../types"
+
+export function renderDevice(
+  entities: DeviceEntities,
+  title: string | undefined,
+  devicePrefix: string,
+  handleToggle: (ev: CustomEvent) => void,
+  handleClick: (ev: CustomEvent) => void
+): TemplateResult {
+  return html`
+    <ha-card>
+      <h1 class="card-header">
+        ${title}
+        <div class="status ${getStatusClass(entities)}">
+          ${getStatusText(entities)}
+        </div>
+      </h1>
+
+      <div class="card-content">
+        ${renderWarnings(entities)}
+        ${renderInfo(entities)}
+        ${renderControls(entities, devicePrefix, handleToggle, handleClick)}
+      </div>
+    </ha-card>
+  `
+}
+```
+
+## Function Organization
+1. Main render function should be the only exported function
+2. Helper functions should be private to the file
+3. Group related functionality into separate render functions
+4. Keep render functions pure and focused
+
+## State Management
+- Use optional chaining for all entity state access
+- Provide fallback values for all undefined states
+- Handle all possible entity states gracefully
+- Use type-safe state access patterns
+
+## Event Handling
+- Use proper event delegation
+- Maintain consistent event handler signatures
+- Pass event handlers from parent component
+- Use proper typing for event objects
+
+## Template Structure
+- Use consistent template structure across devices
+- Follow Home Assistant's card layout patterns
+- Maintain clear visual hierarchy
+- Use semantic HTML elements
+
+## Error States
+- Handle missing entities gracefully
+- Show appropriate warning messages
+- Provide fallback UI for error states
+- Maintain usability in degraded states
+
+## Code Style
+- Use consistent naming conventions
+- Follow TypeScript best practices
+- Keep functions small and focused
+- Use clear and descriptive names
+
+## Documentation
+- Document complex logic
+- Include examples for non-obvious code
+- Document entity requirements
+- Explain state handling
+
+## Testing Considerations
+- Test all possible entity states
+- Verify error handling
+- Test event handling
+- Validate template rendering
+
+## Performance
+- Minimize template complexity
+- Use efficient state access patterns
+- Avoid unnecessary computations
+- Keep DOM updates minimal
+
+## Accessibility
+- Use proper ARIA attributes
+- Maintain keyboard navigation
+- Provide clear state indicators
+- Support screen readers
+
+## Examples
+
+### Status Class Helper
+```typescript
+function getStatusClass(entities: DeviceEntities): string {
+  return entities.status?.state === "working" ? "working" : ""
+}
+```
+
+### Warning Renderer
+```typescript
+function renderWarnings(entities: DeviceEntities): TemplateResult {
+  const warnings = getActiveWarnings(entities)
+  if (warnings.length === 0) return html``
+
+  return html`
+    <div class="warnings">
+      ${warnings.map(warning => html`
+        <div class="warning">${warning}</div>
+      `)}
+    </div>
+  `
+}
+```
+
+### Info Renderer
+```typescript
+function renderInfo(entities: DeviceEntities): TemplateResult {
+  return html`
+    <div class="info-grid">
+      ${getInfoItems(entities).map(item => html`
+        <div class="info-item">
+          <span class="label">${item.label}</span>
+          <span class="value">${item.value}</span>
+        </div>
+      `)}
+    </div>
+  `
+}
+```
+
+### Controls Renderer
+```typescript
+function renderControls(
+  entities: DeviceEntities,
+  devicePrefix: string,
+  handleToggle: (ev: CustomEvent) => void,
+  handleClick: (ev: CustomEvent) => void
+): TemplateResult {
+  return html`
+    <div class="controls">
+      <div class="switches">
+        ${getSwitches(entities, devicePrefix).map(switch => html`
+          <div class="switch">
+            <span>${switch.label}</span>
+            <ha-switch
+              .checked=${switch.checked}
+              data-entity=${switch.entity}
+              @change=${handleToggle}
+            ></ha-switch>
+          </div>
+        `)}
+      </div>
+    </div>
+  `
+}
+```

@@ -1,0 +1,192 @@
+---
+description: Defines visual consistency and theming rules
+globs: 
+alwaysApply: false
+---
+ # Style Guide
+
+## CSS Variables
+Use Home Assistant's CSS variables for consistent theming:
+
+```css
+:host {
+  --warning-color: var(--error-color, #db4437);
+  --card-header-color: var(--ha-card-header-color, --primary-text-color);
+  --secondary-bg: var(--secondary-background-color);
+  --primary-text: var(--primary-text-color);
+  --secondary-text: var(--secondary-text-color);
+  --success-color: var(--success-color);
+}
+```
+
+## Layout Structure
+Follow this hierarchy for card layouts:
+
+```css
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.card-content {
+  padding: 16px;
+}
+```
+
+## Grid System
+Use CSS Grid for responsive layouts:
+
+```css
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+```
+
+## Typography
+Follow these typography rules:
+
+```css
+/* Headers */
+.card-header {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+/* Labels */
+.label {
+  font-size: 0.9em;
+  color: var(--secondary-text);
+}
+
+/* Values */
+.value {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+/* Sub-values */
+.sub-value {
+  font-size: 0.8em;
+  color: var(--secondary-text);
+}
+```
+
+## Spacing
+Use consistent spacing:
+
+```css
+/* Margins */
+.section {
+  margin-bottom: 16px;
+}
+
+/* Padding */
+.card-content {
+  padding: 16px;
+}
+
+/* Gaps */
+.controls {
+  gap: 16px;
+}
+```
+
+## Colors
+Use semantic colors:
+
+```css
+/* Status Colors */
+.status.working {
+  background: var(--success-color);
+  color: white;
+}
+
+/* Warning Colors */
+.warnings {
+  background: var(--warning-color);
+  color: white;
+}
+
+/* Background Colors */
+.info-item {
+  background: var(--secondary-bg);
+}
+```
+
+## Components
+
+### Cards
+```css
+ha-card {
+  border-radius: var(--ha-card-border-radius, 4px);
+  box-shadow: var(--ha-card-box-shadow, none);
+}
+```
+
+### Buttons
+```css
+mwc-button {
+  width: 100%;
+  --mdc-theme-primary: var(--primary-color);
+}
+```
+
+### Switches
+```css
+.switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+```
+
+## Responsive Design
+Use these breakpoints:
+
+```css
+@media (max-width: 600px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .switches {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+```
+
+## Animations
+Use subtle animations:
+
+```css
+.status {
+  transition: background-color 0.2s ease;
+}
+
+.warning {
+  animation: fadeIn 0.3s ease;
+}
+```
+
+## Best Practices
+1. Use CSS variables for themeable values
+2. Keep selectors simple and flat
+3. Use semantic class names
+4. Follow BEM naming convention
+5. Maintain consistent spacing
+6. Use relative units (em, rem)
+7. Support dark/light themes
+8. Ensure responsive layouts
+9. Optimize for performance
+10. Follow accessibility guidelines
