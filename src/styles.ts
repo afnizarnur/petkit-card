@@ -3,6 +3,7 @@ import { css } from "lit"
 export const styles = css`
   :host {
     --warning-color: var(--error-color, #db4437);
+    --primary-color: var(--primary-color, #03a9f4);
   }
 
   .card-header {
@@ -28,18 +29,98 @@ export const styles = css`
 
   .card-content {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .device-image {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .device-image img {
+    max-width: 200px;
+    height: auto;
+  }
+
+  .usage-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .usage-info {
+    flex: 1;
+  }
+
+  .section-title {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--secondary-text-color);
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .usage-count {
+    font-size: 2em;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    margin: 4px 0;
+  }
+
+  .last-used {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--secondary-text-color);
+    font-size: 0.9em;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--secondary-text-color);
+  }
+
+  .status-dot.working {
+    background: var(--success-color);
+  }
+
+  .clean-button {
+    --mdc-theme-primary: var(--primary-color);
+    font-weight: 500;
   }
 
   .warnings {
-    margin-bottom: 16px;
-    padding: 8px;
-    border-radius: 4px;
     background: var(--warning-color);
     color: white;
+    border-radius: 12px;
+    padding: 12px 16px;
   }
 
   .warning {
-    padding: 4px 8px;
+    padding: 4px 0;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .action-buttons mwc-button {
+    --mdc-theme-primary: var(--primary-text-color);
+    --mdc-theme-on-primary: var(--primary-color);
+    width: 100%;
+  }
+
+  .action-buttons mwc-button[activated] {
+    --mdc-theme-primary: var(--primary-color);
+    --mdc-theme-on-primary: white;
   }
 
   .info-grid {
@@ -115,12 +196,6 @@ export const styles = css`
     text-align: center;
     font-size: 0.8em;
     color: var(--secondary-text-color);
-  }
-
-  .section-title {
-    font-weight: 500;
-    margin: 16px 0 8px;
-    color: var(--primary-text-color);
   }
 
   .stats-grid {

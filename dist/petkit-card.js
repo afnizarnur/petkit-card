@@ -69,6 +69,7 @@ const t=t=>(e,o)=>{ void 0!==o?o.addInitializer((()=>{customElements.define(t,e)
 const styles = i$3 `
   :host {
     --warning-color: var(--error-color, #db4437);
+    --primary-color: var(--primary-color, #03a9f4);
   }
 
   .card-header {
@@ -94,18 +95,98 @@ const styles = i$3 `
 
   .card-content {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .device-image {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .device-image img {
+    max-width: 200px;
+    height: auto;
+  }
+
+  .usage-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .usage-info {
+    flex: 1;
+  }
+
+  .section-title {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--secondary-text-color);
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .usage-count {
+    font-size: 2em;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    margin: 4px 0;
+  }
+
+  .last-used {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--secondary-text-color);
+    font-size: 0.9em;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--secondary-text-color);
+  }
+
+  .status-dot.working {
+    background: var(--success-color);
+  }
+
+  .clean-button {
+    --mdc-theme-primary: var(--primary-color);
+    font-weight: 500;
   }
 
   .warnings {
-    margin-bottom: 16px;
-    padding: 8px;
-    border-radius: 4px;
     background: var(--warning-color);
     color: white;
+    border-radius: 12px;
+    padding: 12px 16px;
   }
 
   .warning {
-    padding: 4px 8px;
+    padding: 4px 0;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .action-buttons mwc-button {
+    --mdc-theme-primary: var(--primary-text-color);
+    --mdc-theme-on-primary: var(--primary-color);
+    width: 100%;
+  }
+
+  .action-buttons mwc-button[activated] {
+    --mdc-theme-primary: var(--primary-color);
+    --mdc-theme-on-primary: white;
   }
 
   .info-grid {
@@ -183,12 +264,6 @@ const styles = i$3 `
     color: var(--secondary-text-color);
   }
 
-  .section-title {
-    font-weight: 500;
-    margin: 16px 0 8px;
-    color: var(--primary-text-color);
-  }
-
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -259,24 +334,90 @@ var PetkitDeviceType;
     PetkitDeviceType["WATER_FOUNTAIN"] = "water_fountain";
 })(PetkitDeviceType || (PetkitDeviceType = {}));
 
+// Inline SVG as data URL
+const deviceImage = "data:image/svg+xml," +
+    encodeURIComponent(`<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="100" width="160" height="40" rx="8" fill="currentColor" opacity="0.2"/>
+  <rect x="10" y="20" width="180" height="90" rx="12" fill="currentColor" opacity="0.3"/>
+  <path d="M60 20 L140 20 L160 60 L40 60 Z" fill="currentColor" opacity="0.2"/>
+  <rect x="40" y="75" width="120" height="5" rx="2.5" fill="currentColor" opacity="0.4"/>
+  <circle cx="170" cy="40" r="6" fill="currentColor" opacity="0.4"/>
+</svg>`);
 function renderLitterBox(entities, title, devicePrefix, handleToggle, handleClick) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     return x `
     <ha-card>
-      <h1 class="card-header">
-        ${title}
-        <div
-          class="status ${((_a = entities.deviceStatus) === null || _a === void 0 ? void 0 : _a.state) === "working"
+      <div class="card-content">
+        <div class="device-image">
+          <img src=${deviceImage} alt="Petkit Litter Box" />
+        </div>
+
+        <div class="usage-section">
+          <div class="usage-info">
+            <h3 class="section-title">Toilet Usage</h3>
+            <div class="usage-count">
+              ${((_a = entities.timesUsed) === null || _a === void 0 ? void 0 : _a.state) || "0"} times
+            </div>
+            <div class="last-used">
+              <span
+                class="status-dot ${((_b = entities.deviceStatus) === null || _b === void 0 ? void 0 : _b.state) === "working"
         ? "working"
         : ""}"
-        >
-          ${((_b = entities.deviceStatus) === null || _b === void 0 ? void 0 : _b.state) || "unknown"}
-        </div>
-      </h1>
+              ></span>
+              Last used by ${((_c = entities.lastUsedBy) === null || _c === void 0 ? void 0 : _c.state) || "unknown"}
+            </div>
+          </div>
 
-      <div class="card-content">
-        ${renderWarnings$2(entities)} ${renderInfo$2(entities)}
-        ${renderControls$1(entities, devicePrefix, handleToggle, handleClick)}
+          <mwc-button
+            raised
+            class="clean-button"
+            data-entity="button.${devicePrefix}_scoop"
+            @click=${handleClick}
+          >
+            CLEAN NOW
+          </mwc-button>
+        </div>
+
+        ${renderWarnings$2(entities)}
+        ${Object.values(entities.pets || {}).map((pet) => renderPetInfo(pet))}
+
+        <div class="action-buttons">
+          <mwc-button
+            outlined
+            data-entity="button.${devicePrefix}_deodorize"
+            @click=${handleClick}
+          >
+            DEODORIZE
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_light"
+            @click=${handleToggle}
+            .activated=${((_d = entities.light) === null || _d === void 0 ? void 0 : _d.state) === "on"}
+          >
+            LIGHTS ${((_e = entities.light) === null || _e === void 0 ? void 0 : _e.state) === "on" ? "OFF" : "ON"}
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_auto_clean"
+            @click=${handleToggle}
+            .activated=${((_f = entities.autoclean) === null || _f === void 0 ? void 0 : _f.state) === "on"}
+          >
+            ${((_g = entities.autoclean) === null || _g === void 0 ? void 0 : _g.state) === "on" ? "AUTO" : "MAINT"} MODE
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_power"
+            @click=${handleToggle}
+            .activated=${((_h = entities.power) === null || _h === void 0 ? void 0 : _h.state) === "on"}
+          >
+            EMI ${((_j = entities.power) === null || _j === void 0 ? void 0 : _j.state) === "on" ? "OFF" : "ON"}
+          </mwc-button>
+        </div>
       </div>
     </ha-card>
   `;
@@ -329,81 +470,6 @@ function renderPetInfo(pet) {
             >${((_d = pet.entities.lastWeightMeasurement) === null || _d === void 0 ? void 0 : _d.state) || "0"} kg</span
           >
         </div>
-      </div>
-    </div>
-  `;
-}
-function renderInfo$2(entities) {
-    var _a, _b, _c, _d;
-    return x `
-    <div class="info-grid">
-      <div class="info-item">
-        <span class="label">Litter Level</span>
-        <span class="value">${((_a = entities.litterLevel) === null || _a === void 0 ? void 0 : _a.state) || "unknown"}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">Times Used Today</span>
-        <span class="value">${((_b = entities.timesUsed) === null || _b === void 0 ? void 0 : _b.state) || "0"}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">Last Used By</span>
-        <span class="value">${((_c = entities.lastUsedBy) === null || _c === void 0 ? void 0 : _c.state) || "unknown"}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">Deodorant Left</span>
-        <span class="value">${((_d = entities.deodorantDays) === null || _d === void 0 ? void 0 : _d.state) || "0"} days</span>
-      </div>
-    </div>
-
-    ${Object.values(entities.pets || {}).map((pet) => renderPetInfo(pet))}
-  `;
-}
-function renderControls$1(entities, devicePrefix, handleToggle, handleClick) {
-    var _a, _b, _c;
-    return x `
-    <div class="controls">
-      <div class="switches">
-        <div class="switch">
-          <span>Power</span>
-          <ha-switch
-            .checked=${((_a = entities.power) === null || _a === void 0 ? void 0 : _a.state) === "on"}
-            data-entity="switch.${devicePrefix}_power"
-            @change=${handleToggle}
-          ></ha-switch>
-        </div>
-        <div class="switch">
-          <span>Auto Clean</span>
-          <ha-switch
-            .checked=${((_b = entities.autoclean) === null || _b === void 0 ? void 0 : _b.state) === "on"}
-            data-entity="switch.${devicePrefix}_auto_clean"
-            @change=${handleToggle}
-          ></ha-switch>
-        </div>
-        <div class="switch">
-          <span>Light</span>
-          <ha-switch
-            .checked=${((_c = entities.light) === null || _c === void 0 ? void 0 : _c.state) === "on"}
-            data-entity="switch.${devicePrefix}_light"
-            @change=${handleToggle}
-          ></ha-switch>
-        </div>
-      </div>
-
-      <div class="buttons">
-        <mwc-button
-          outlined
-          data-entity="button.${devicePrefix}_scoop"
-          @click=${handleClick}
-        >
-          Scoop Now
-        </mwc-button>
-        <mwc-button
-          outlined
-          data-entity="button.${devicePrefix}_deodorize"
-          @click=${handleClick}
-        >
-          Deodorize
-        </mwc-button>
       </div>
     </div>
   `;

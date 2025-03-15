@@ -1,6 +1,18 @@
 import { html, TemplateResult } from "lit"
 import { LitterBoxEntities, PetData } from "../types"
 
+// Inline SVG as data URL
+const deviceImage =
+  "data:image/svg+xml," +
+  encodeURIComponent(`<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="100" width="160" height="40" rx="8" fill="currentColor" opacity="0.2"/>
+  <rect x="10" y="20" width="180" height="90" rx="12" fill="currentColor" opacity="0.3"/>
+  <path d="M60 20 L140 20 L160 60 L40 60 Z" fill="currentColor" opacity="0.2"/>
+  <rect x="40" y="75" width="120" height="5" rx="2.5" fill="currentColor" opacity="0.4"/>
+  <circle cx="170" cy="40" r="6" fill="currentColor" opacity="0.4"/>
+</svg>`)
+
 export function renderLitterBox(
   entities: LitterBoxEntities,
   title: string | undefined,
@@ -10,20 +22,76 @@ export function renderLitterBox(
 ): TemplateResult {
   return html`
     <ha-card>
-      <h1 class="card-header">
-        ${title}
-        <div
-          class="status ${entities.deviceStatus?.state === "working"
-            ? "working"
-            : ""}"
-        >
-          ${entities.deviceStatus?.state || "unknown"}
-        </div>
-      </h1>
-
       <div class="card-content">
-        ${renderWarnings(entities)} ${renderInfo(entities)}
-        ${renderControls(entities, devicePrefix, handleToggle, handleClick)}
+        <div class="device-image">
+          <img src=${deviceImage} alt="Petkit Litter Box" />
+        </div>
+
+        <div class="usage-section">
+          <div class="usage-info">
+            <h3 class="section-title">Toilet Usage</h3>
+            <div class="usage-count">
+              ${entities.timesUsed?.state || "0"} times
+            </div>
+            <div class="last-used">
+              <span
+                class="status-dot ${entities.deviceStatus?.state === "working"
+                  ? "working"
+                  : ""}"
+              ></span>
+              Last used by ${entities.lastUsedBy?.state || "unknown"}
+            </div>
+          </div>
+
+          <mwc-button
+            raised
+            class="clean-button"
+            data-entity="button.${devicePrefix}_scoop"
+            @click=${handleClick}
+          >
+            CLEAN NOW
+          </mwc-button>
+        </div>
+
+        ${renderWarnings(entities)}
+        ${Object.values(entities.pets || {}).map((pet) => renderPetInfo(pet))}
+
+        <div class="action-buttons">
+          <mwc-button
+            outlined
+            data-entity="button.${devicePrefix}_deodorize"
+            @click=${handleClick}
+          >
+            DEODORIZE
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_light"
+            @click=${handleToggle}
+            .activated=${entities.light?.state === "on"}
+          >
+            LIGHTS ${entities.light?.state === "on" ? "OFF" : "ON"}
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_auto_clean"
+            @click=${handleToggle}
+            .activated=${entities.autoclean?.state === "on"}
+          >
+            ${entities.autoclean?.state === "on" ? "AUTO" : "MAINT"} MODE
+          </mwc-button>
+
+          <mwc-button
+            outlined
+            data-entity="switch.${devicePrefix}_power"
+            @click=${handleToggle}
+            .activated=${entities.power?.state === "on"}
+          >
+            EMI ${entities.power?.state === "on" ? "OFF" : "ON"}
+          </mwc-button>
+        </div>
       </div>
     </ha-card>
   `
