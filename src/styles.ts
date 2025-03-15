@@ -70,6 +70,12 @@ export const styles = css`
   .last-usage .text {
     font-size: 0.875rem;
     color: var(--primary-color);
+    line-height: 1.5;
+  }
+
+  .last-usage .text strong {
+    font-weight: 600;
+    color: var(--primary-color);
   }
 
   .action-wrapper {

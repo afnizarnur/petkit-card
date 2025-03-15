@@ -136,6 +136,12 @@ const styles = i$3 `
   .last-usage .text {
     font-size: 0.875rem;
     color: var(--primary-color);
+    line-height: 1.5;
+  }
+
+  .last-usage .text strong {
+    font-weight: 600;
+    color: var(--primary-color);
   }
 
   .action-wrapper {
@@ -273,20 +279,31 @@ function renderDeviceIllustration(model) {
 }
 function renderUsageSection(entities, devicePrefix, handleClick, model) {
     var _a, _b, _c, _d;
+    // Get the last used time from attributes, with proper fallback
+    const lastUsedTime = (_b = (_a = entities.lastUsedBy) === null || _a === void 0 ? void 0 : _a.attributes) === null || _b === void 0 ? void 0 : _b.last_used_time;
+    const lastUsedBy = ((_c = entities.lastUsedBy) === null || _c === void 0 ? void 0 : _c.state) || "Unknown";
+    const renderLastUsage = () => {
+        // If we have a time but no known user, just show the time
+        if (lastUsedBy === "Unknown" && lastUsedTime) {
+            return x `Last used at ${lastUsedTime}`;
+        }
+        // If we have both user and time
+        if (lastUsedTime) {
+            return x `Last used by <strong>${lastUsedBy}</strong> at ${lastUsedTime}`;
+        }
+        // If we have neither, show a default message
+        return x `No usage recorded`;
+    };
     return x `
     <div class="usage-section">
       <div class="content-column">
         <div class="usage-info">
           <div class="usage-stats">
             <span class="label">Toilet Usage</span>
-            <span class="value">${((_a = entities.timesUsed) === null || _a === void 0 ? void 0 : _a.state) || "0"} times</span>
+            <span class="value">${((_d = entities.timesUsed) === null || _d === void 0 ? void 0 : _d.state) || "0"} times</span>
           </div>
           <div class="last-usage">
-            <span class="text"
-              >Last used by ${((_b = entities.lastUsedBy) === null || _b === void 0 ? void 0 : _b.state) || "Unknown"} at
-              ${((_d = (_c = entities.lastUsedBy) === null || _c === void 0 ? void 0 : _c.attributes) === null || _d === void 0 ? void 0 : _d.last_used_time) ||
-        "00:00"}</span
-            >
+            <span class="text">${renderLastUsage()}</span>
           </div>
           <div class="action-wrapper">
             <ha-button

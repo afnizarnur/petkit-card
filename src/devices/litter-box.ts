@@ -116,6 +116,23 @@ function renderUsageSection(
   handleClick: (ev: CustomEvent) => void,
   model?: string
 ): TemplateResult {
+  // Get the last used time from attributes, with proper fallback
+  const lastUsedTime = entities.lastUsedBy?.attributes?.last_used_time
+  const lastUsedBy = entities.lastUsedBy?.state || "Unknown"
+
+  const renderLastUsage = () => {
+    // If we have a time but no known user, just show the time
+    if (lastUsedBy === "Unknown" && lastUsedTime) {
+      return html`Last used at ${lastUsedTime}`
+    }
+    // If we have both user and time
+    if (lastUsedTime) {
+      return html`Last used by <strong>${lastUsedBy}</strong> at ${lastUsedTime}`
+    }
+    // If we have neither, show a default message
+    return html`No usage recorded`
+  }
+
   return html`
     <div class="usage-section">
       <div class="content-column">
@@ -125,11 +142,7 @@ function renderUsageSection(
             <span class="value">${entities.timesUsed?.state || "0"} times</span>
           </div>
           <div class="last-usage">
-            <span class="text"
-              >Last used by ${entities.lastUsedBy?.state || "Unknown"} at
-              ${entities.lastUsedBy?.attributes?.last_used_time ||
-              "00:00"}</span
-            >
+            <span class="text">${renderLastUsage()}</span>
           </div>
           <div class="action-wrapper">
             <ha-button
