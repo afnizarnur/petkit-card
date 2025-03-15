@@ -215,6 +215,40 @@ const styles = i$3 `
     font-size: 0.9em;
     padding: 2px 0;
   }
+
+  .pet-info {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--ha-card-background, var(--card-background-color, white));
+    border-radius: var(--ha-card-border-radius, 12px);
+    box-shadow: var(--ha-card-box-shadow, none);
+  }
+
+  .pet-info .pet-name {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-text-color);
+  }
+
+  .pet-info .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .pet-info .info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pet-info .info-item .sub-value {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    margin-top: 0.25rem;
+  }
 `;
 
 // Device Types
@@ -268,6 +302,37 @@ function renderWarnings$2(entities) {
     </div>
   `;
 }
+function renderPetInfo(pet) {
+    var _a, _b, _c, _d;
+    return x `
+    <div class="pet-info">
+      <h3 class="pet-name">${pet.name}</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Last Used</span>
+          <span class="value"
+            >${((_a = pet.entities.lastLitterUsed) === null || _a === void 0 ? void 0 : _a.state) || "unknown"}</span
+          >
+          <span class="sub-value"
+            >${((_b = pet.entities.lastUseDate) === null || _b === void 0 ? void 0 : _b.state) || "unknown"}</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Duration</span>
+          <span class="value"
+            >${((_c = pet.entities.lastUseDuration) === null || _c === void 0 ? void 0 : _c.state) || "0"} sec</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Weight</span>
+          <span class="value"
+            >${((_d = pet.entities.lastWeightMeasurement) === null || _d === void 0 ? void 0 : _d.state) || "0"} kg</span
+          >
+        </div>
+      </div>
+    </div>
+  `;
+}
 function renderInfo$2(entities) {
     var _a, _b, _c, _d;
     return x `
@@ -289,6 +354,8 @@ function renderInfo$2(entities) {
         <span class="value">${((_d = entities.deodorantDays) === null || _d === void 0 ? void 0 : _d.state) || "0"} days</span>
       </div>
     </div>
+
+    ${Object.values(entities.pets || {}).map((pet) => renderPetInfo(pet))}
   `;
 }
 function renderControls$1(entities, devicePrefix, handleToggle, handleClick) {
@@ -612,6 +679,7 @@ let PetkitCard = class PetkitCard extends r$1 {
         }
     }
     getLitterBoxEntities() {
+        var _a;
         const prefix = this.config.device_prefix || "";
         return {
             deviceStatus: this.getEntityState(`sensor.${prefix}_device_status`),
@@ -625,6 +693,18 @@ let PetkitCard = class PetkitCard extends r$1 {
             autoclean: this.getEntityState(`switch.${prefix}_auto_clean`),
             power: this.getEntityState(`switch.${prefix}_power`),
             light: this.getEntityState(`switch.${prefix}_light`),
+            pets: ((_a = this.config.pets) === null || _a === void 0 ? void 0 : _a.reduce((acc, pet) => {
+                acc[pet.name] = {
+                    name: pet.name,
+                    entities: {
+                        lastLitterUsed: this.getEntityState(`sensor.${pet.prefix}_last_litter_used`),
+                        lastUseDate: this.getEntityState(`sensor.${pet.prefix}_last_use_date`),
+                        lastUseDuration: this.getEntityState(`sensor.${pet.prefix}_last_use_duration`),
+                        lastWeightMeasurement: this.getEntityState(`sensor.${pet.prefix}_last_weight_measurement`),
+                    },
+                };
+                return acc;
+            }, {})) || {},
         };
     }
     getWaterFountainEntities() {

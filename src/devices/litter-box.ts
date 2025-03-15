@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit"
-import { LitterBoxEntities } from "../types"
+import { LitterBoxEntities, PetData } from "../types"
 
 export function renderLitterBox(
   entities: LitterBoxEntities,
@@ -53,6 +53,37 @@ function renderWarnings(entities: LitterBoxEntities): TemplateResult {
   `
 }
 
+function renderPetInfo(pet: PetData): TemplateResult {
+  return html`
+    <div class="pet-info">
+      <h3 class="pet-name">${pet.name}</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Last Used</span>
+          <span class="value"
+            >${pet.entities.lastLitterUsed?.state || "unknown"}</span
+          >
+          <span class="sub-value"
+            >${pet.entities.lastUseDate?.state || "unknown"}</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Duration</span>
+          <span class="value"
+            >${pet.entities.lastUseDuration?.state || "0"} sec</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Weight</span>
+          <span class="value"
+            >${pet.entities.lastWeightMeasurement?.state || "0"} kg</span
+          >
+        </div>
+      </div>
+    </div>
+  `
+}
+
 function renderInfo(entities: LitterBoxEntities): TemplateResult {
   return html`
     <div class="info-grid">
@@ -73,6 +104,8 @@ function renderInfo(entities: LitterBoxEntities): TemplateResult {
         <span class="value">${entities.deodorantDays?.state || "0"} days</span>
       </div>
     </div>
+
+    ${Object.values(entities.pets || {}).map((pet) => renderPetInfo(pet))}
   `
 }
 

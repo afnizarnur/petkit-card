@@ -149,4 +149,38 @@ export const styles = css`
     font-size: 0.9em;
     padding: 2px 0;
   }
+
+  .pet-info {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--ha-card-background, var(--card-background-color, white));
+    border-radius: var(--ha-card-border-radius, 12px);
+    box-shadow: var(--ha-card-box-shadow, none);
+  }
+
+  .pet-info .pet-name {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-text-color);
+  }
+
+  .pet-info .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .pet-info .info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pet-info .info-item .sub-value {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    margin-top: 0.25rem;
+  }
 `

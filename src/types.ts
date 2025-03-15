@@ -13,6 +13,10 @@ export interface PetkitCardConfig {
   device_type: PetkitDeviceType
   device_prefix: string
   title?: string
+  pets?: {
+    name: string
+    prefix: string
+  }[]
 }
 
 // Entity Interfaces
@@ -43,6 +47,7 @@ export interface LitterBoxEntities {
   autoclean?: SwitchState
   power?: SwitchState
   light?: SwitchState
+  pets: Record<string, PetData>
 }
 
 export interface FeederEntities {
@@ -118,4 +123,22 @@ export interface WaterFountainEntities {
   lastBleConnection?: BaseEntityState
   lastUpdate?: BaseEntityState
   purifiedWater?: BaseEntityState
+}
+
+// Pet Specific Interfaces
+export interface PetEntityState extends BaseEntityState {
+  name: string
+  picture?: string
+}
+
+export interface PetUsageData {
+  lastLitterUsed?: BaseEntityState
+  lastUseDate?: BaseEntityState
+  lastUseDuration?: BaseEntityState
+  lastWeightMeasurement?: BaseEntityState
+}
+
+export interface PetData {
+  name: string
+  entities: PetUsageData
 }

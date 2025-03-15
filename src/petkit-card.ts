@@ -8,6 +8,7 @@ import {
   BaseEntityState,
   DeviceState,
   SwitchState,
+  PetData,
 } from "./types"
 import { renderLitterBox } from "./devices/litter-box"
 import { renderFeeder } from "./devices/feeder"
@@ -121,6 +122,30 @@ export class PetkitCard extends LitElement {
       ),
       power: this.getEntityState<SwitchState>(`switch.${prefix}_power`),
       light: this.getEntityState<SwitchState>(`switch.${prefix}_light`),
+      pets:
+        this.config.pets?.reduce(
+          (acc, pet) => {
+            acc[pet.name] = {
+              name: pet.name,
+              entities: {
+                lastLitterUsed: this.getEntityState<BaseEntityState>(
+                  `sensor.${pet.prefix}_last_litter_used`
+                ),
+                lastUseDate: this.getEntityState<BaseEntityState>(
+                  `sensor.${pet.prefix}_last_use_date`
+                ),
+                lastUseDuration: this.getEntityState<BaseEntityState>(
+                  `sensor.${pet.prefix}_last_use_duration`
+                ),
+                lastWeightMeasurement: this.getEntityState<BaseEntityState>(
+                  `sensor.${pet.prefix}_last_weight_measurement`
+                ),
+              },
+            }
+            return acc
+          },
+          {} as Record<string, PetData>
+        ) || {},
     }
   }
 
