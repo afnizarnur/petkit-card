@@ -35,7 +35,7 @@ export const styles = css`
     width: 200px;
     height: auto;
     color: var(--primary-text-color);
-    opacity: 0.5;
+    opacity: 0.2;
     right: -32px;
     position: relative;
   }
