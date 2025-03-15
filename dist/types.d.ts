@@ -8,10 +8,11 @@ export interface PetkitCardConfig {
     device_type: PetkitDeviceType;
     device_prefix: string;
     title?: string;
-    pets?: {
+    model?: string;
+    pets?: Array<{
         name: string;
         prefix: string;
-    }[];
+    }>;
 }
 export interface BaseEntityState {
     state: string;

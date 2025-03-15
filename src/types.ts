@@ -13,10 +13,11 @@ export interface PetkitCardConfig {
   device_type: PetkitDeviceType
   device_prefix: string
   title?: string
-  pets?: {
+  model?: string
+  pets?: Array<{
     name: string
     prefix: string
-  }[]
+  }>
 }
 
 // Entity Interfaces

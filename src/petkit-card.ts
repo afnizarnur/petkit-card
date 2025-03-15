@@ -335,7 +335,8 @@ export class PetkitCard extends LitElement {
           this.config.title,
           this.config.device_prefix,
           this.handleToggle.bind(this),
-          this.handleClick.bind(this)
+          this.handleClick.bind(this),
+          this.config.model
         )
       case PetkitDeviceType.FEEDER:
         return renderFeeder(

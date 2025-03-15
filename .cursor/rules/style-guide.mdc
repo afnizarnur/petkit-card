@@ -190,3 +190,52 @@ Use subtle animations:
 8. Ensure responsive layouts
 9. Optimize for performance
 10. Follow accessibility guidelines
+
+# Material Design Guidelines
+
+## Components
+Use Home Assistant's Material Web Components for consistency:
+- `mwc-button` for buttons
+- `ha-card` for cards
+- `ha-switch` for switches
+- `ha-select` for dropdowns
+
+## Button Types
+1. **Primary Action**
+   ```typescript
+   html`<mwc-button raised>Primary Action</mwc-button>`
+   ```
+
+2. **Secondary Action**
+   ```typescript
+   html`<mwc-button outlined>Secondary Action</mwc-button>`
+   ```
+
+3. **Text Button**
+   ```typescript
+   html`<mwc-button>Text Action</mwc-button>`
+   ```
+
+## Button Properties
+- Use `raised` for primary actions
+- Use `outlined` for secondary actions
+- Use `dense` for compact buttons
+- Use `icon` to add leading/trailing icons
+
+## Layout Guidelines
+- Follow Material Design spacing system (4px grid)
+- Use proper elevation levels
+- Follow Material Design color system
+- Use proper typography scale
+
+## Example Usage
+```typescript
+html`
+  <mwc-button 
+    raised
+    label="Action"
+    icon="mdi:plus"
+    @click=${this.handleClick}
+  ></mwc-button>
+`
+```
